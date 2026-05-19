@@ -856,9 +856,43 @@
       opacity: 0.3;
       margin: 0;
     }
+
+    /* ── PARTICLES CANVAS ── */
+    #particles-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── TYPEWRITER ── */
+    .typewriter-wrap {
+      display: inline;
+      color: var(--cyan);
+      position: relative;
+    }
+    .tw-cursor {
+      display: inline-block;
+      width: 3px;
+      height: 0.82em;
+      background: var(--cyan);
+      vertical-align: middle;
+      margin-left: 3px;
+      border-radius: 1px;
+      animation: cursor-blink 0.65s step-end infinite;
+      box-shadow: 0 0 8px var(--cyan);
+    }
+    @keyframes cursor-blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
   </style>
 </head>
 <body>
+
+  <!-- PARTICLES -->
+  <canvas id="particles-canvas"></canvas>
 
   <!-- NAV -->
   <nav>
@@ -886,9 +920,9 @@
         <div class="hero-text">
           <div class="hero-badge">Fundada por 3 irmãos apaixonados por tech</div>
           <h1>
-            Transformamos ideias em<br />
-            <span class="highlight">soluções digitais</span><br />
-            que geram resultado
+            Criamos <span class="typewriter-wrap"><span id="tw-word">Sites</span><span class="tw-cursor"></span></span><br />
+            que transformam<br />
+            negócios de verdade
           </h1>
           <p>
             Sites, aplicativos e sistemas empresariais feitos sob medida para escalar seu negócio.
@@ -1263,58 +1297,151 @@
   </footer>
 
   <script>
-    // Scroll animations
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(el => {
-        if (el.isIntersecting) {
-          el.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.12 });
+    /* ════════════════════════════════════════
+       PARTICLES NETWORK
+    ════════════════════════════════════════ */
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, particles;
 
+    const PARTICLE_COUNT = 90;
+    const MAX_DIST = 140;
+    const CYAN = '0,200,255';
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+
+    function makeParticle() {
+      return {
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.45,
+        vy: (Math.random() - 0.5) * 0.45,
+        r: Math.random() * 1.8 + 0.8,
+        alpha: Math.random() * 0.5 + 0.3,
+      };
+    }
+
+    function initParticles() {
+      particles = Array.from({ length: PARTICLE_COUNT }, makeParticle);
+    }
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, W, H);
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0) p.x = W;
+        if (p.x > W) p.x = 0;
+        if (p.y < 0) p.y = H;
+        if (p.y > H) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${CYAN},${p.alpha})`;
+        ctx.fill();
+
+        for (let j = i + 1; j < particles.length; j++) {
+          const q = particles[j];
+          const dx = p.x - q.x, dy = p.y - q.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < MAX_DIST) {
+            const opacity = (1 - dist / MAX_DIST) * 0.18;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(q.x, q.y);
+            ctx.strokeStyle = `rgba(${CYAN},${opacity})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(drawParticles);
+    }
+
+    resize();
+    initParticles();
+    drawParticles();
+    window.addEventListener('resize', () => { resize(); initParticles(); });
+
+    /* ════════════════════════════════════════
+       TYPEWRITER
+    ════════════════════════════════════════ */
+    const words = ['Sites', 'Apps', 'Sistemas', 'Automações', 'Soluções de IA'];
+    const twEl = document.getElementById('tw-word');
+    let wIdx = 0, charIdx = 0, deleting = false;
+
+    function typeLoop() {
+      const word = words[wIdx];
+      if (!deleting) {
+        twEl.textContent = word.slice(0, ++charIdx);
+        if (charIdx === word.length) {
+          deleting = true;
+          setTimeout(typeLoop, 1800);
+          return;
+        }
+        setTimeout(typeLoop, 80);
+      } else {
+        twEl.textContent = word.slice(0, --charIdx);
+        if (charIdx === 0) {
+          deleting = false;
+          wIdx = (wIdx + 1) % words.length;
+          setTimeout(typeLoop, 300);
+          return;
+        }
+        setTimeout(typeLoop, 45);
+      }
+    }
+    setTimeout(typeLoop, 800);
+
+    /* ════════════════════════════════════════
+       SCROLL FADE-IN
+    ════════════════════════════════════════ */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(el => { if (el.isIntersecting) el.target.classList.add('visible'); });
+    }, { threshold: 0.12 });
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-    // Smooth nav background on scroll
+    /* ════════════════════════════════════════
+       NAV SCROLL
+    ════════════════════════════════════════ */
     const nav = document.querySelector('nav');
     window.addEventListener('scroll', () => {
       nav.style.background = window.scrollY > 40
-        ? 'rgba(8,13,20,0.97)'
-        : 'rgba(8,13,20,0.85)';
+        ? 'rgba(8,13,20,0.97)' : 'rgba(8,13,20,0.85)';
     });
 
-    // Stat counter animation
+    /* ════════════════════════════════════════
+       STAT COUNTERS
+    ════════════════════════════════════════ */
     function animateCounter(el, target, suffix = '') {
       let current = 0;
-      const increment = target / 60;
-      const timer = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-          el.textContent = target + suffix;
-          clearInterval(timer);
-        } else {
-          el.textContent = Math.floor(current) + suffix;
-        }
+      const inc = target / 60;
+      const t = setInterval(() => {
+        current += inc;
+        if (current >= target) { el.textContent = target + suffix; clearInterval(t); }
+        else el.textContent = Math.floor(current) + suffix;
       }, 20);
     }
-
-    const statsObserver = new IntersectionObserver((entries) => {
+    const statsObs = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const nums = entry.target.querySelectorAll('.stat-num');
-          nums.forEach(num => {
-            const text = num.textContent;
-            if (text.includes('%')) animateCounter(num, parseInt(text), '%');
-            else if (text.includes('+')) animateCounter(num, parseInt(text), '+');
-            else if (text.includes('x')) animateCounter(num, parseInt(text), 'x');
-            else if (text.includes('h')) animateCounter(num, parseInt(text), 'h');
-          });
-          statsObserver.unobserve(entry.target);
-        }
+        if (!entry.isIntersecting) return;
+        entry.target.querySelectorAll('.stat-num').forEach(num => {
+          const t = num.textContent;
+          if (t.includes('%')) animateCounter(num, parseInt(t), '%');
+          else if (t.includes('+')) animateCounter(num, parseInt(t), '+');
+          else if (t.includes('x')) animateCounter(num, parseInt(t), 'x');
+          else if (t.includes('h')) animateCounter(num, parseInt(t), 'h');
+        });
+        statsObs.unobserve(entry.target);
       });
     }, { threshold: 0.5 });
-
     const heroStats = document.querySelector('.hero-stats');
-    if (heroStats) statsObserver.observe(heroStats);
+    if (heroStats) statsObs.observe(heroStats);
   </script>
 </body>
 </html>
