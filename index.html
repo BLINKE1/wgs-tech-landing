@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WGS Tech — Tecnologia que Transforma</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #080d14;
+      --bg2:      #0d1520;
+      --bg3:      #111d2e;
+      --cyan:     #00c8ff;
+      --cyan2:    #00e5ff;
+      --cyan-dim: #007fa3;
+      --steel:    #7a90a8;
+      --text:     #d8e6f0;
+      --white:    #f0f8ff;
+      --border:   rgba(0,200,255,0.15);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--cyan-dim); border-radius: 3px; }
+
+    /* ── GRID BG ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,200,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,200,255,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6%;
+      height: 72px;
+      background: rgba(8,13,20,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .nav-logo img {
+      width: 42px;
+      height: 42px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .nav-logo span {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.05em;
+    }
+    .nav-logo span em {
+      font-style: normal;
+      color: var(--cyan);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--steel);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--cyan); }
+
+    .nav-cta {
+      background: var(--cyan);
+      color: var(--bg) !important;
+      padding: 9px 22px;
+      border-radius: 6px;
+      font-weight: 700 !important;
+      transition: background 0.2s, box-shadow 0.2s !important;
+    }
+    .nav-cta:hover {
+      background: var(--cyan2) !important;
+      box-shadow: 0 0 20px rgba(0,200,255,0.4) !important;
+      color: var(--bg) !important;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 6% 80px;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(0,200,255,0.12) 0%, transparent 70%);
+      border-radius: 50%;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      animation: pulse-glow 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); }
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 860px; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0,200,255,0.08);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 6px 18px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--cyan);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 7px; height: 7px;
+      background: var(--cyan);
+      border-radius: 50%;
+      animation: blink 1.5s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; } 50% { opacity: 0.3; }
+    }
+
+    .hero-logo {
+      width: 140px;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 20px;
+      border: 2px solid var(--border);
+      box-shadow: 0 0 40px rgba(0,200,255,0.25), 0 0 80px rgba(0,200,255,0.1);
+      margin-bottom: 36px;
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.4rem, 5.5vw, 4rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 24px;
+      letter-spacing: -0.02em;
+    }
+    .hero h1 .highlight {
+      color: var(--cyan);
+      position: relative;
+    }
+
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--steel);
+      max-width: 620px;
+      margin: 0 auto 44px;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--cyan);
+      color: var(--bg);
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 14px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.3s, transform 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .btn-primary:hover {
+      background: var(--cyan2);
+      box-shadow: 0 0 30px rgba(0,200,255,0.45);
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 14px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+    .btn-ghost:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: rgba(0,200,255,0.05);
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      margin-top: 72px;
+      padding-top: 48px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--cyan);
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--steel);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* ── SECTIONS ── */
+    section { position: relative; z-index: 1; }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+    .section-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--cyan);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .section-header h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .section-header p {
+      font-size: 1.05rem;
+      color: var(--steel);
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .container { max-width: 1180px; margin: 0 auto; padding: 100px 6%; }
+
+    /* ── SERVICES ── */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 24px;
+    }
+
+    .service-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px 36px;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .service-card:hover {
+      border-color: rgba(0,200,255,0.4);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 60px rgba(0,200,255,0.1);
+    }
+    .service-card:hover::before { opacity: 1; }
+
+    .service-icon {
+      width: 56px; height: 56px;
+      background: rgba(0,200,255,0.1);
+      border: 1px solid rgba(0,200,255,0.2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      font-size: 1.6rem;
+    }
+    .service-card h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 14px;
+    }
+    .service-card p {
+      font-size: 0.9rem;
+      color: var(--steel);
+      line-height: 1.75;
+      margin-bottom: 24px;
+    }
+    .service-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--cyan-dim);
+      background: rgba(0,200,255,0.07);
+      border: 1px solid rgba(0,200,255,0.15);
+      padding: 4px 11px;
+      border-radius: 100px;
+      letter-spacing: 0.03em;
+    }
+
+    /* ── WHY US ── */
+    .why-section { background: var(--bg2); }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .why-visual {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .why-img-wrap {
+      position: relative;
+      width: 340px;
+      height: 340px;
+    }
+    .why-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+    }
+    .why-ring {
+      position: absolute;
+      inset: -20px;
+      border: 1px solid rgba(0,200,255,0.15);
+      border-radius: 36px;
+      animation: spin-slow 20s linear infinite;
+    }
+    .why-ring-2 {
+      position: absolute;
+      inset: -40px;
+      border: 1px dashed rgba(0,200,255,0.08);
+      border-radius: 50px;
+      animation: spin-slow 30s linear infinite reverse;
+    }
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .why-dot {
+      position: absolute;
+      width: 10px; height: 10px;
+      background: var(--cyan);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--cyan);
+    }
+    .why-dot-1 { top: -5px; left: 50%; transform: translateX(-50%); }
+    .why-dot-2 { bottom: -5px; right: 20%; }
+
+    .why-content h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+    }
+    .why-content > p {
+      color: var(--steel);
+      line-height: 1.75;
+      margin-bottom: 40px;
+    }
+
+    .why-list { display: flex; flex-direction: column; gap: 20px; }
+    .why-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .why-check {
+      flex-shrink: 0;
+      width: 28px; height: 28px;
+      background: rgba(0,200,255,0.12);
+      border: 1px solid rgba(0,200,255,0.3);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: var(--cyan);
+      margin-top: 2px;
+    }
+    .why-item-text strong {
+      display: block;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+    .why-item-text span { font-size: 0.875rem; color: var(--steel); line-height: 1.6; }
+
+    /* ── PROCESS ── */
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+      position: relative;
+    }
+    .process-steps::before {
+      content: '';
+      position: absolute;
+      top: 36px; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), var(--border), transparent);
+      pointer-events: none;
+    }
+
+    .step-card {
+      text-align: center;
+      padding: 36px 24px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .step-card:hover {
+      border-color: rgba(0,200,255,0.35);
+      transform: translateY(-4px);
+    }
+    .step-num {
+      width: 56px; height: 56px;
+      background: rgba(0,200,255,0.08);
+      border: 1px solid rgba(0,200,255,0.25);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--cyan);
+      margin: 0 auto 20px;
+    }
+    .step-card h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+    .step-card p { font-size: 0.85rem; color: var(--steel); line-height: 1.65; }
+
+    /* ── TECH STACK ── */
+    .tech-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: center;
+    }
+    .tech-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 10px 20px;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .tech-pill:hover { border-color: var(--cyan); color: var(--cyan); }
+    .tech-pill span { font-size: 1rem; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 24px;
+    }
+    .testimonial-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      transition: border-color 0.3s;
+    }
+    .testimonial-card:hover { border-color: rgba(0,200,255,0.3); }
+
+    .stars { color: var(--cyan); font-size: 0.9rem; margin-bottom: 16px; letter-spacing: 2px; }
+    .testimonial-card p {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.75;
+      margin-bottom: 24px;
+      font-style: italic;
+    }
+    .testimonial-author { display: flex; align-items: center; gap: 12px; }
+    .author-avatar {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--cyan-dim), var(--bg3));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--white);
+      border: 1px solid var(--border);
+    }
+    .author-name { font-weight: 700; color: var(--white); font-size: 0.9rem; }
+    .author-role { font-size: 0.78rem; color: var(--steel); }
+
+    /* ── CTA ── */
+    .cta-section {
+      background: linear-gradient(135deg, rgba(0,200,255,0.06) 0%, transparent 60%);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .cta-inner {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .cta-inner h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+    }
+    .cta-inner h2 span { color: var(--cyan); }
+    .cta-inner p {
+      font-size: 1.05rem;
+      color: var(--steel);
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+    .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 60px 6% 32px;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.8fr 1fr 1fr 1fr;
+      gap: 48px;
+      max-width: 1180px;
+      margin: 0 auto 48px;
+    }
+    .footer-brand img {
+      width: 52px; height: 52px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+    .footer-brand p {
+      font-size: 0.875rem;
+      color: var(--steel);
+      line-height: 1.7;
+      max-width: 260px;
+      margin-bottom: 24px;
+    }
+    .social-links { display: flex; gap: 12px; }
+    .social-link {
+      width: 36px; height: 36px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--steel);
+      text-decoration: none;
+      font-size: 1rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .social-link:hover { border-color: var(--cyan); color: var(--cyan); }
+
+    .footer-col h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 12px; }
+    .footer-col a {
+      font-size: 0.875rem;
+      color: var(--steel);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--cyan); }
+
+    .footer-bottom {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: gap;
+      gap: 16px;
+    }
+    .footer-bottom p { font-size: 0.8rem; color: var(--steel); }
+    .footer-bottom span { color: var(--cyan); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .why-grid { grid-template-columns: 1fr; gap: 48px; }
+      .why-visual { display: none; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .process-steps::before { display: none; }
+    }
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .hero-stats { gap: 28px; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+    }
+
+    /* ── ANIMATIONS ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .delay-1 { transition-delay: 0.1s; }
+    .delay-2 { transition-delay: 0.2s; }
+    .delay-3 { transition-delay: 0.3s; }
+    .delay-4 { transition-delay: 0.4s; }
+
+    /* ── NEON LINE ── */
+    .neon-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      opacity: 0.3;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <img src="WGS TECH LOGO.jpg" alt="WGS Tech Logo" />
+      <span>WGS <em>TECH</em></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#servicos">Serviços</a></li>
+      <li><a href="#processo">Processo</a></li>
+      <li><a href="#tecnologias">Tecnologias</a></li>
+      <li><a href="#depoimentos">Depoimentos</a></li>
+      <li><a href="#contato" class="nav-cta">Solicitar Orçamento</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+      <div class="hero-badge">Fundada por 3 irmãos apaixonados por tech</div>
+      <img src="WGS TECH LOGO.jpg" alt="WGS Tech" class="hero-logo" />
+      <h1>
+        Transformamos ideias em<br />
+        <span class="highlight">soluções digitais</span> que<br />
+        geram resultado
+      </h1>
+      <p>
+        Sites, aplicativos e sistemas empresariais feitos sob medida para escalar seu negócio.
+        Da startup à corporação — entregamos tecnologia que funciona.
+      </p>
+      <div class="hero-actions">
+        <a href="#contato" class="btn-primary">
+          ⚡ Quero um orçamento
+        </a>
+        <a href="#servicos" class="btn-ghost">
+          Ver serviços →
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">50+</div>
+          <div class="stat-label">Projetos Entregues</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">98%</div>
+          <div class="stat-label">Satisfação</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">3x</div>
+          <div class="stat-label">Mais Rápido</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">24h</div>
+          <div class="stat-label">Suporte</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="neon-divider"></div>
+
+  <!-- SERVICES -->
+  <section id="servicos">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="section-tag">// O que fazemos</div>
+        <h2>Soluções completas de tecnologia</h2>
+        <p>Do design ao deploy, cuidamos de tudo para que você foque no que realmente importa: o seu negócio.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card fade-up delay-1">
+          <div class="service-icon">🌐</div>
+          <h3>Sites & Landing Pages</h3>
+          <p>Sites institucionais, landing pages de alta conversão e e-commerces otimizados para SEO e performance. Design moderno, carregamento ultra-rápido.</p>
+          <div class="service-tags">
+            <span class="tag">Next.js</span>
+            <span class="tag">React</span>
+            <span class="tag">SEO</span>
+            <span class="tag">E-commerce</span>
+            <span class="tag">Landing Pages</span>
+          </div>
+        </div>
+        <div class="service-card fade-up delay-2">
+          <div class="service-icon">📱</div>
+          <h3>Aplicativos Mobile</h3>
+          <p>Apps para iOS e Android com experiência nativa. Desde MVPs para validação de mercado até produtos completos prontos para escalar.</p>
+          <div class="service-tags">
+            <span class="tag">React Native</span>
+            <span class="tag">Flutter</span>
+            <span class="tag">iOS</span>
+            <span class="tag">Android</span>
+            <span class="tag">MVP</span>
+          </div>
+        </div>
+        <div class="service-card fade-up delay-3">
+          <div class="service-icon">🏢</div>
+          <h3>Sistemas Empresariais</h3>
+          <p>ERPs, CRMs, painéis de gestão e automações que aumentam a produtividade e eliminam processos manuais. Integração com qualquer plataforma.</p>
+          <div class="service-tags">
+            <span class="tag">ERP</span>
+            <span class="tag">CRM</span>
+            <span class="tag">Automação</span>
+            <span class="tag">API</span>
+            <span class="tag">Dashboard</span>
+          </div>
+        </div>
+        <div class="service-card fade-up delay-1">
+          <div class="service-icon">☁️</div>
+          <h3>Cloud & Infraestrutura</h3>
+          <p>Deploy, configuração e manutenção de infraestrutura cloud escalável. Sua aplicação sempre no ar, segura e performática.</p>
+          <div class="service-tags">
+            <span class="tag">AWS</span>
+            <span class="tag">GCP</span>
+            <span class="tag">Docker</span>
+            <span class="tag">CI/CD</span>
+            <span class="tag">DevOps</span>
+          </div>
+        </div>
+        <div class="service-card fade-up delay-2">
+          <div class="service-icon">🤖</div>
+          <h3>Inteligência Artificial</h3>
+          <p>Chatbots inteligentes, automação com IA e integração com LLMs para otimizar processos e criar experiências diferenciadas.</p>
+          <div class="service-tags">
+            <span class="tag">ChatGPT</span>
+            <span class="tag">LLM</span>
+            <span class="tag">Chatbot</span>
+            <span class="tag">Automação</span>
+            <span class="tag">IA</span>
+          </div>
+        </div>
+        <div class="service-card fade-up delay-3">
+          <div class="service-icon">🛡️</div>
+          <h3>Manutenção & Suporte</h3>
+          <p>Suporte contínuo, atualizações de segurança, monitoramento e evolução do produto. Seu sistema nunca para de crescer.</p>
+          <div class="service-tags">
+            <span class="tag">Suporte 24h</span>
+            <span class="tag">Manutenção</span>
+            <span class="tag">Segurança</span>
+            <span class="tag">Monitoria</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="neon-divider"></div>
+
+  <!-- WHY US -->
+  <section id="porque" class="why-section">
+    <div class="container">
+      <div class="why-grid">
+        <div class="why-visual fade-up">
+          <div class="why-img-wrap">
+            <img src="WGS TECH LOGO.jpg" alt="WGS Tech" />
+            <div class="why-ring"><div class="why-dot why-dot-1"></div></div>
+            <div class="why-ring-2"><div class="why-dot why-dot-2"></div></div>
+          </div>
+        </div>
+        <div class="why-content fade-up delay-2">
+          <div class="section-tag">// Por que escolher a WGS Tech</div>
+          <h2>Tecnologia séria,<br />entrega de verdade</h2>
+          <p>Não somos uma agência que terceiriza. Somos um time de irmãos que crescemos desenvolvendo tecnologia e hoje entregamos soluções de nível enterprise para negócios de todos os tamanhos.</p>
+          <div class="why-list">
+            <div class="why-item">
+              <div class="why-check">✓</div>
+              <div class="why-item-text">
+                <strong>Prazos reais, entrega garantida</strong>
+                <span>Cumprimos o que prometemos. Cronograma detalhado desde o primeiro dia.</span>
+              </div>
+            </div>
+            <div class="why-item">
+              <div class="why-check">✓</div>
+              <div class="why-item-text">
+                <strong>Código limpo, sem gambiarras</strong>
+                <span>Desenvolvemos com boas práticas para que seu produto evolua sem dor.</span>
+              </div>
+            </div>
+            <div class="why-item">
+              <div class="why-check">✓</div>
+              <div class="why-item-text">
+                <strong>Comunicação transparente</strong>
+                <span>Você acompanha cada etapa. Reuniões, atualizações e relatórios frequentes.</span>
+              </div>
+            </div>
+            <div class="why-item">
+              <div class="why-check">✓</div>
+              <div class="why-item-text">
+                <strong>Parceria de longo prazo</strong>
+                <span>Não desaparecemos após o lançamento. Estamos aqui para crescer junto com você.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="neon-divider"></div>
+
+  <!-- PROCESS -->
+  <section id="processo">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="section-tag">// Como trabalhamos</div>
+        <h2>Do briefing ao lançamento</h2>
+        <p>Um processo estruturado que garante previsibilidade e qualidade em cada etapa do projeto.</p>
+      </div>
+      <div class="process-steps">
+        <div class="step-card fade-up delay-1">
+          <div class="step-num">01</div>
+          <h3>Descoberta</h3>
+          <p>Entendemos seu negócio, objetivos e público. Alinhamos escopo, tecnologia e expectativas antes de escrever uma linha de código.</p>
+        </div>
+        <div class="step-card fade-up delay-2">
+          <div class="step-num">02</div>
+          <h3>Design & Prototipação</h3>
+          <p>Criamos wireframes e protótipos navegáveis. Você valida a experiência antes do desenvolvimento começar.</p>
+        </div>
+        <div class="step-card fade-up delay-3">
+          <div class="step-num">03</div>
+          <h3>Desenvolvimento</h3>
+          <p>Código limpo, ágil e testado. Sprints semanais com entregas parciais para seu acompanhamento em tempo real.</p>
+        </div>
+        <div class="step-card fade-up delay-4">
+          <div class="step-num">04</div>
+          <h3>Lançamento & Suporte</h3>
+          <p>Deploy seguro, monitoramento pós-lançamento e suporte contínuo para garantir que tudo funcione perfeitamente.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="neon-divider"></div>
+
+  <!-- TECH STACK -->
+  <section id="tecnologias" style="background: var(--bg2);">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="section-tag">// Stack tecnológica</div>
+        <h2>Ferramentas de ponta</h2>
+        <p>Utilizamos as melhores tecnologias do mercado para entregar produtos modernos, escaláveis e de alta performance.</p>
+      </div>
+      <div class="tech-grid fade-up">
+        <div class="tech-pill"><span>⚛️</span> React</div>
+        <div class="tech-pill"><span>▲</span> Next.js</div>
+        <div class="tech-pill"><span>📱</span> React Native</div>
+        <div class="tech-pill"><span>🎯</span> Flutter</div>
+        <div class="tech-pill"><span>🟢</span> Node.js</div>
+        <div class="tech-pill"><span>🐍</span> Python</div>
+        <div class="tech-pill"><span>🐘</span> PostgreSQL</div>
+        <div class="tech-pill"><span>🔥</span> Firebase</div>
+        <div class="tech-pill"><span>☁️</span> AWS</div>
+        <div class="tech-pill"><span>🐳</span> Docker</div>
+        <div class="tech-pill"><span>🔷</span> TypeScript</div>
+        <div class="tech-pill"><span>🤖</span> OpenAI API</div>
+        <div class="tech-pill"><span>💳</span> Stripe</div>
+        <div class="tech-pill"><span>📊</span> Supabase</div>
+        <div class="tech-pill"><span>🛒</span> Shopify</div>
+        <div class="tech-pill"><span>📐</span> Figma</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="neon-divider"></div>
+
+  <!-- TESTIMONIALS -->
+  <section id="depoimentos">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="section-tag">// Depoimentos</div>
+        <h2>O que nossos clientes dizem</h2>
+        <p>Resultados reais de quem confiou na WGS Tech para transformar seu negócio.</p>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card fade-up delay-1">
+          <div class="stars">★★★★★</div>
+          <p>"A WGS Tech entregou nosso e-commerce em 3 semanas com uma qualidade que não esperávamos. As vendas aumentaram 40% no primeiro mês após o lançamento."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">MR</div>
+            <div>
+              <div class="author-name">Marcos Ribeiro</div>
+              <div class="author-role">CEO — Loja Moderna</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card fade-up delay-2">
+          <div class="stars">★★★★★</div>
+          <p>"O sistema de gestão que desenvolveram substituiu 4 planilhas diferentes. Economizamos horas por semana e eliminamos erros que custavam caro."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">AC</div>
+            <div>
+              <div class="author-name">Ana Carolina</div>
+              <div class="author-role">Diretora Operacional — Construtora Apex</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card fade-up delay-3">
+          <div class="stars">★★★★★</div>
+          <p>"O app ficou exatamente como eu imaginei, e melhor ainda. O suporte pós-lançamento é excepcional. Equipe super comprometida."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">FS</div>
+            <div>
+              <div class="author-name">Felipe Santos</div>
+              <div class="author-role">Fundador — FitTrack App</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="neon-divider"></div>
+
+  <!-- CTA -->
+  <section id="contato" class="cta-section">
+    <div class="container">
+      <div class="cta-inner fade-up">
+        <div class="section-tag">// Próximo passo</div>
+        <h2>Pronto para <span>transformar</span><br />sua ideia em realidade?</h2>
+        <p>Conte seu projeto para a gente. Em até 24 horas você recebe um retorno com proposta personalizada e sem compromisso.</p>
+        <div class="cta-buttons">
+          <a href="https://wa.me/5500000000000?text=Oi!%20Quero%20saber%20mais%20sobre%20os%20serviços%20da%20WGS%20Tech" class="btn-primary" target="_blank">
+            💬 Falar no WhatsApp
+          </a>
+          <a href="mailto:contato@wgstech.com.br" class="btn-ghost">
+            ✉️ Enviar e-mail
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="WGS TECH LOGO.jpg" alt="WGS Tech" />
+        <p>Desenvolvemos soluções digitais de alta performance para empresas que querem crescer com tecnologia de verdade.</p>
+        <div class="social-links">
+          <a href="#" class="social-link" title="Instagram">📷</a>
+          <a href="#" class="social-link" title="LinkedIn">💼</a>
+          <a href="#" class="social-link" title="GitHub">🐙</a>
+          <a href="#" class="social-link" title="WhatsApp">💬</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Serviços</h4>
+        <ul>
+          <li><a href="#servicos">Sites & Landing Pages</a></li>
+          <li><a href="#servicos">Aplicativos Mobile</a></li>
+          <li><a href="#servicos">Sistemas Empresariais</a></li>
+          <li><a href="#servicos">Cloud & DevOps</a></li>
+          <li><a href="#servicos">Inteligência Artificial</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Empresa</h4>
+        <ul>
+          <li><a href="#porque">Sobre nós</a></li>
+          <li><a href="#processo">Como trabalhamos</a></li>
+          <li><a href="#depoimentos">Cases</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contato</h4>
+        <ul>
+          <li><a href="mailto:contato@wgstech.com.br">contato@wgstech.com.br</a></li>
+          <li><a href="https://wa.me/5500000000000">WhatsApp</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 <span>WGS Tech</span>. Todos os direitos reservados.</p>
+      <p>Feito com ⚡ pelos irmãos W, G & S</p>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(el => {
+        if (el.isIntersecting) {
+          el.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // Smooth nav background on scroll
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      nav.style.background = window.scrollY > 40
+        ? 'rgba(8,13,20,0.97)'
+        : 'rgba(8,13,20,0.85)';
+    });
+
+    // Stat counter animation
+    function animateCounter(el, target, suffix = '') {
+      let current = 0;
+      const increment = target / 60;
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          el.textContent = target + suffix;
+          clearInterval(timer);
+        } else {
+          el.textContent = Math.floor(current) + suffix;
+        }
+      }, 20);
+    }
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const nums = entry.target.querySelectorAll('.stat-num');
+          nums.forEach(num => {
+            const text = num.textContent;
+            if (text.includes('%')) animateCounter(num, parseInt(text), '%');
+            else if (text.includes('+')) animateCounter(num, parseInt(text), '+');
+            else if (text.includes('x')) animateCounter(num, parseInt(text), 'x');
+            else if (text.includes('h')) animateCounter(num, parseInt(text), 'h');
+          });
+          statsObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    const heroStats = document.querySelector('.hero-stats');
+    if (heroStats) statsObserver.observe(heroStats);
+  </script>
+</body>
+</html>
